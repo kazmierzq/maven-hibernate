@@ -1,4 +1,4 @@
-package io.github.mat3e;
+package io.github.mat3e.lang;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class LangServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(LangServlet.class);
 
-    private LangRepository repository;
+    private LangService service;
     private ObjectMapper mapper;
 
     /**
@@ -23,18 +23,18 @@ public class LangServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     public LangServlet() {
-        this(new LangRepository(), new ObjectMapper());
+        this(new LangService(), new ObjectMapper());
     }
 
-    LangServlet(LangRepository repository, ObjectMapper mapper) {
+    LangServlet(LangService service, ObjectMapper mapper) {
         this.mapper = mapper;
-        this.repository = repository;
+        this.service = service;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("Git request with parameters " + req.getParameterMap());
         resp.setContentType("application/json;charset=UTF-8");
-        mapper.writeValue(resp.getOutputStream(), repository.findAll());
+        mapper.writeValue(resp.getOutputStream(), service.findAll());
     }
 }
